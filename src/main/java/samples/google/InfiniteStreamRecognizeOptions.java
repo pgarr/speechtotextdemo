@@ -1,4 +1,4 @@
-package com.example.speechtotextdemo.samples.google;
+package samples.google;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

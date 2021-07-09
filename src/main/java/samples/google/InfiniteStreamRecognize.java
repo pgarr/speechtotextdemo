@@ -1,4 +1,4 @@
-package com.example.speechtotextdemo.samples.google;
+package samples.google;
 
 import com.google.api.gax.rpc.ClientStream;
 import com.google.api.gax.rpc.ResponseObserver;
