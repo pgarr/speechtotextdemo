@@ -4,12 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Speech to text demo</title>
+<!--    <script type="text/javascript" th:src="@{/js/src/pcmWorker.js}"></script>-->
 </head>
 
 <body>
 <h1>Google API</h1>
-
+<h2>Real time audio streaming input transcription</h2>
+<button type="button" id="google_start">Start</button>
+<button type="button" id="google_stop">Stop</button>
+<input type="text" id="google_input" size="100">
 <h1>Azure API</h1>
+<button type="button" id="azure_start">Start</button>
+<button type="button" id="azure_stop">Stop</button>
+<input type="text" id="azure_input" size="100">
 
+<script type="text/javascript" th:src="@{/js/src/speech.js}"></script>
 </body>
 </html>
