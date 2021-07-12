@@ -33,4 +33,4 @@ build/
 .vscode/
 
 /credentials/
-/src/main/java/samples/google/
+/src/main/java/samples/*
