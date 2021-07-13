@@ -1,5 +1,9 @@
 const quantumSize = 128
 
+window.AudioWorkletProcessor = window.AudioWorkletProcessor || window.webkitAudioWorkletProcessor;
+
+var test = new AudioWorkletProcessor()
+
 class TestProcessor extends AudioWorkletProcessor {
   constructor(options) {
     super()

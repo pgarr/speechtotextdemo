@@ -39,14 +39,18 @@ const speechRecognized = (data) => {
 let connection = null;
 
 const connect = () => {
-    connection?.close()
+    if (connection != null) {
+        connection.close()
+    }
     connection = new WebSocket("ws://localhost:8080/ws/googlestt")
     connection.onmessage = event => speechRecognized(JSON.parse(event.data))
     onConnectionStart()
 }
 
 const disconnect = () => {
-    connection?.close()
+    if (connection != null) {
+        connection.close()
+    }
     connection = undefined
     onConnectionStop()
 }
