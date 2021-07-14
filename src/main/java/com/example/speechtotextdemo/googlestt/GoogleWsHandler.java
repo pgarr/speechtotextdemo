@@ -33,14 +33,14 @@ public class GoogleWsHandler extends BinaryWebSocketHandler {
         ResponseObserver<StreamingRecognizeResponse> responseObserver = new ResponseObserver<StreamingRecognizeResponse>() {
             @Override
             public void onStart(StreamController controller) {
-                logger.debug("Google API - Observer onStart");
+                logger.debug("Google API - Observer::onStart");
 
                 referenceToStreamController = controller;
             }
 
             @Override
             public void onResponse(StreamingRecognizeResponse response) {
-                logger.debug("Google API - Observer onResponse");
+                logger.debug("Google API - Observer::onResponse");
 
                 StreamingRecognitionResult result = response.getResultsList().get(0);
                 boolean isFinal = result.getIsFinal();
@@ -61,12 +61,12 @@ public class GoogleWsHandler extends BinaryWebSocketHandler {
 
             @Override
             public void onError(Throwable throwable) {
-                logger.warn("Google API - Observer onError: " + throwable.getMessage());
+                logger.warn("Google API - Observer::onError: " + throwable.getMessage());
             }
 
             @Override
             public void onComplete() {
-                logger.debug("Google API - Observer onComplete");
+                logger.debug("Google API - Observer::onComplete");
             }
         };
 
