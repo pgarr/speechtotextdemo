@@ -42,11 +42,15 @@ public class GoogleWsHandler extends BinaryWebSocketHandler {
             public void onResponse(StreamingRecognizeResponse response) {
                 logger.debug("Google API - Observer onResponse");
 
-                MessageDto msg = new MessageDto();
-
                 StreamingRecognitionResult result = response.getResultsList().get(0);
-                msg.setFinal(result.getIsFinal());
-                msg.setText(result.getAlternativesList().get(0).getTranscript());
+                boolean isFinal = result.getIsFinal();
+                String text = result.getAlternativesList().get(0).getTranscript();
+                logger.info(String.format("GOOGLE API - message read: %s", text));
+
+                MessageDto msg = new MessageDto();
+                msg.setFinal(isFinal);
+                msg.setText(text);
+
 
                 try {
                     session.sendMessage(new TextMessage(msg.toJsonString()));

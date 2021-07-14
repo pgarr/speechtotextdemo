@@ -30,7 +30,6 @@ const setGoogleInputText = (text) => {
 let recognizedText = "";
 
 const speechRecognized = (data) => {
-    recognizedText = recognizedText + " " + data.text
     if (data.final) {
         setGoogleInputText(recognizedText)
     } else setGoogleInputText(recognizedText + "...")
