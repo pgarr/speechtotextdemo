@@ -1,6 +1,7 @@
 package com.example.speechtotextdemo;
 
 
+import com.example.speechtotextdemo.googlestt.GoogleWsHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;

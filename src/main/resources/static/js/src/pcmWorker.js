@@ -1,10 +1,6 @@
 const quantumSize = 128
 
-window.AudioWorkletProcessor = window.AudioWorkletProcessor || window.webkitAudioWorkletProcessor;
-
-var test = new AudioWorkletProcessor()
-
-class TestProcessor extends AudioWorkletProcessor {
+class MyProcessor extends AudioWorkletProcessor {
   constructor(options) {
     super()
     this.quantaPerFrame = 12
@@ -24,4 +20,4 @@ class TestProcessor extends AudioWorkletProcessor {
   }
 }
 
-registerProcessor('pcm-worker', TestProcessor)
+registerProcessor('pcm-worker', MyProcessor)

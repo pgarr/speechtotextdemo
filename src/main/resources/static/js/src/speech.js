@@ -1,9 +1,9 @@
 const sampleRate = 16000
 
 const loadPCMWorker = (audioContext) =>
-  audioContext.audioWorklet.addModule('/pcmWorker.js')
+  audioContext.audioWorklet.addModule('/js/src/pcmWorker.js')
 
-const getMediaStream = () => {
+const getMediaStream = () =>
     navigator.mediaDevices.getUserMedia({
         audio: {
           deviceId: "default",
@@ -13,7 +13,7 @@ const getMediaStream = () => {
         },
         video: false
     })
-}
+
 
 const captureAudio = (audioContext, stream, output) => {
     const source = audioContext.createMediaStreamSource(stream)
