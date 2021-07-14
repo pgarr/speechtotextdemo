@@ -34,3 +34,4 @@ build/
 
 /credentials/
 /src/main/java/samples/*
+application.properties

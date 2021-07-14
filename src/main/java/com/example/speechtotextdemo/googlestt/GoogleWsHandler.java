@@ -1,5 +1,6 @@
 package com.example.speechtotextdemo.googlestt;
 
+import com.example.speechtotextdemo.MessageDto;
 import com.google.api.gax.rpc.ClientStream;
 import com.google.api.gax.rpc.ResponseObserver;
 import com.google.api.gax.rpc.StreamController;
@@ -50,7 +51,6 @@ public class GoogleWsHandler extends BinaryWebSocketHandler {
                 MessageDto msg = new MessageDto();
                 msg.setFinal(isFinal);
                 msg.setText(text);
-
 
                 try {
                     session.sendMessage(new TextMessage(msg.toJsonString()));

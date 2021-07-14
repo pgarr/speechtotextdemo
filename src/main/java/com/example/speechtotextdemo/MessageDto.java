@@ -1,4 +1,4 @@
-package com.example.speechtotextdemo.googlestt;
+package com.example.speechtotextdemo;
 
 public class MessageDto {
     private boolean isFinal;
