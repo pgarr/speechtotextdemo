@@ -33,7 +33,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -49,7 +48,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
-
         <!-- GOOGLE DEPENDENCIES -->
         <dependency>
             <groupId>com.google.cloud</groupId>
@@ -61,7 +59,6 @@
 <!--            <artifactId>google-cloud-storage</artifactId>-->
 <!--            <version>1.118.0</version>-->
 <!--        </dependency>-->
-
         <!-- AZURE DEPENDENCIES -->
         <dependency>
             <groupId>com.microsoft.cognitiveservices.speech</groupId>

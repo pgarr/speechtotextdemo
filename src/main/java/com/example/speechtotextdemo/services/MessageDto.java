@@ -1,4 +1,4 @@
-package com.example.speechtotextdemo;
+package com.example.speechtotextdemo.services;
 
 public class MessageDto {
     private boolean isFinal;

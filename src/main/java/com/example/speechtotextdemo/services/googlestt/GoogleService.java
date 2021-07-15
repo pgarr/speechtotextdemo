@@ -1,6 +1,7 @@
-package com.example.speechtotextdemo.googlestt;
+package com.example.speechtotextdemo.services.googlestt;
 
-import com.example.speechtotextdemo.MessageDto;
+import com.example.speechtotextdemo.services.ICognitiveServiceWsHandler;
+import com.example.speechtotextdemo.services.MessageDto;
 import com.google.api.gax.rpc.ClientStream;
 import com.google.api.gax.rpc.ResponseObserver;
 import com.google.api.gax.rpc.StreamController;
@@ -8,40 +9,41 @@ import com.google.cloud.speech.v1p1beta1.*;
 import com.google.protobuf.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.BinaryMessage;
-import org.springframework.web.socket.CloseStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.BinaryWebSocketHandler;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.concurrent.ExecutionException;
 
-@Component
-public class GoogleWsHandler extends BinaryWebSocketHandler {
-    private static final String LANGUAGE_CODE = "pl_PL";
-    private static final Logger logger = LoggerFactory.getLogger(GoogleWsHandler.class);
+@Service
+public class GoogleService implements ICognitiveServiceWsHandler {
+
+    @Autowired
+    private GoogleConfiguration configuration;
+
+    private static final Logger logger = LoggerFactory.getLogger(GoogleService.class);
 
     private SpeechClient client;
     private ClientStream<StreamingRecognizeRequest> clientStream;
     private StreamController referenceToStreamController;
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        logger.info("Google API - Connection established");
+    public void configureConnection(WebSocketSession session) throws ExecutionException, InterruptedException, IOException {
 
         ResponseObserver<StreamingRecognizeResponse> responseObserver = new ResponseObserver<StreamingRecognizeResponse>() {
             @Override
             public void onStart(StreamController controller) {
-                logger.debug("Google API - Observer::onStart");
+                logger.debug("GOOGLE API - Observer::onStart");
 
                 referenceToStreamController = controller;
             }
 
             @Override
             public void onResponse(StreamingRecognizeResponse response) {
-                logger.debug("Google API - Observer::onResponse");
+                logger.debug("GOOGLE API - Observer::onResponse");
 
                 StreamingRecognitionResult result = response.getResultsList().get(0);
                 boolean isFinal = result.getIsFinal();
@@ -61,22 +63,26 @@ public class GoogleWsHandler extends BinaryWebSocketHandler {
 
             @Override
             public void onError(Throwable throwable) {
-                logger.warn("Google API - Observer::onError: " + throwable.getMessage());
+                logger.warn(String.format("GOOGLE API - Observer::onError: %s", throwable.getMessage()));
             }
 
             @Override
             public void onComplete() {
-                logger.debug("Google API - Observer::onComplete");
+                logger.debug("GOOGLE API - Observer::onComplete");
             }
         };
 
         client = SpeechClient.create();
         clientStream = client.streamingRecognizeCallable().splitCall(responseObserver);
 
+        prepareAndSendConfig();  // The first request in a streaming call has to be a config
+    }
+
+    private void prepareAndSendConfig() {
         RecognitionConfig recognitionConfig =
                 RecognitionConfig.newBuilder()
                         .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)
-                        .setLanguageCode(LANGUAGE_CODE)
+                        .setLanguageCode(configuration.getLanguageSpeechCode())
                         .setSampleRateHertz(16000)
                         .build();
 
@@ -89,24 +95,20 @@ public class GoogleWsHandler extends BinaryWebSocketHandler {
         StreamingRecognizeRequest request =
                 StreamingRecognizeRequest.newBuilder()
                         .setStreamingConfig(streamingRecognitionConfig)
-                        .build(); // The first request in a streaming call has to be a config
+                        .build();
 
         clientStream.send(request);
     }
 
     @Override
-    protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-        ByteBuffer payload = message.getPayload();
-        logger.debug("Google API - " + payload);
-
+    public void handleAudioSample(ByteBuffer payload) {
+        logger.debug(String.format("GOOGLE API - %s", payload));
         StreamingRecognizeRequest request = StreamingRecognizeRequest.newBuilder().setAudioContent(ByteString.copyFrom(payload)).build();
         clientStream.send(request);
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        logger.info("Google API - Connection closed");
-
+    public void closeConnection() {
         clientStream.closeSend();
         referenceToStreamController.cancel(); // remove Observer
         client.close();
