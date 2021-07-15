@@ -54,11 +54,6 @@
             <artifactId>google-cloud-speech</artifactId>
             <version>1.29.3</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.google.cloud</groupId>-->
-<!--            <artifactId>google-cloud-storage</artifactId>-->
-<!--            <version>1.118.0</version>-->
-<!--        </dependency>-->
         <!-- AZURE DEPENDENCIES -->
         <dependency>
             <groupId>com.microsoft.cognitiveservices.speech</groupId>

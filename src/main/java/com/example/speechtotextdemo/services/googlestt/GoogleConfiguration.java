@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class GoogleConfiguration {
 
     private String languageSpeechCode;
+    private String credentialsFile;
 
     public String getLanguageSpeechCode() {
         return languageSpeechCode;
@@ -15,5 +16,13 @@ public class GoogleConfiguration {
 
     public void setLanguageSpeechCode(String languageSpeechCode) {
         this.languageSpeechCode = languageSpeechCode;
+    }
+
+    public String getCredentialsFile() {
+        return credentialsFile;
+    }
+
+    public void setCredentialsFile(String credentialsFile) {
+        this.credentialsFile = credentialsFile;
     }
 }

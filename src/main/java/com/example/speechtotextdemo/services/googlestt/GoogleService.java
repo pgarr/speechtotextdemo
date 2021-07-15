@@ -2,9 +2,12 @@ package com.example.speechtotextdemo.services.googlestt;
 
 import com.example.speechtotextdemo.services.ICognitiveServiceWsHandler;
 import com.example.speechtotextdemo.services.MessageDto;
+import com.google.api.gax.core.CredentialsProvider;
+import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.api.gax.rpc.ClientStream;
 import com.google.api.gax.rpc.ResponseObserver;
 import com.google.api.gax.rpc.StreamController;
+import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.speech.v1p1beta1.*;
 import com.google.protobuf.ByteString;
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
@@ -72,7 +76,9 @@ public class GoogleService implements ICognitiveServiceWsHandler {
             }
         };
 
-        client = SpeechClient.create();
+        CredentialsProvider credentialsProvider = FixedCredentialsProvider.create(ServiceAccountCredentials.fromStream(new FileInputStream(configuration.getCredentialsFile())));
+        SpeechSettings settings = SpeechSettings.newBuilder().setCredentialsProvider(credentialsProvider).build();
+        client = SpeechClient.create(settings);
         clientStream = client.streamingRecognizeCallable().splitCall(responseObserver);
 
         prepareAndSendConfig();  // The first request in a streaming call has to be a config
