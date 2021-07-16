@@ -1,6 +1,9 @@
+app.allowedOrigins=
+
 azure.speechKey=
 azure.speechRegion=
 azure.languageSpeechCode=
 
 google.credentialsFile=
 google.languageSpeechCode=
+

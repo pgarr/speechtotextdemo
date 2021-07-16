@@ -13,6 +13,9 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
+
+    @Autowired
+    AppConfiguration appConfiguration;
     @Autowired
     AzureWsHandler azureWsHandler;
     @Autowired
@@ -20,7 +23,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(googleWsHandler, "/ws/googlestt");
-        registry.addHandler(azureWsHandler, "/ws/azurestt");
+        registry.addHandler(googleWsHandler, "/ws/googlestt").setAllowedOrigins(appConfiguration.getAllowedOrigins());
+        registry.addHandler(azureWsHandler, "/ws/azurestt").setAllowedOrigins(appConfiguration.getAllowedOrigins());
     }
 }
